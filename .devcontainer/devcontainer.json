@@ -1,0 +1,29 @@
+{
+   "name": "Lightweight Desktop + Chrome",
+   "image": "mcr.microsoft.com/devcontainers/base:debian-12",
+   "features": {
+       "ghcr.io/devcontainers/features/desktop-lite:1": {
+           "version": "latest"
+       },
+       // Adds common utils missing in 'base' but present in 'universal'
+       "ghcr.io/devcontainers/features/common-utils:2": {
+           "installZsh": true,
+           "username": "vscode"
+       }
+   },
+   // Grant permissions to avoid the 'machine-id' and X11 errors
+   "privileged": true,
+   "containerEnv": {
+       "VNC_RESOLUTION": "1280x800x16",
+       "DISPLAY": ":1"
+   },
+   // Install Chrome + Fluxbox menu tweak
+   "postCreateCommand": "wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt-get update && sudo apt-get install -y ./google-chrome-stable_current_amd64.deb && rm -f google-chrome-stable_current_amd64.deb && echo 'alias chrome=\"google-chrome --no-sandbox --disable-dev-shm-usage\"' >> /home/vscode/.bashrc",
+   "forwardPorts": [6080],
+   "portsAttributes": {
+       "6080": {
+           "label": "Desktop",
+           "onAutoForward": "openBrowser"
+       }
+   }
+}
